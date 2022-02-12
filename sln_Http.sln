@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sln_HttpListener", "sln_HttpListener\sln_HttpListener.csproj", "{EE11C6AA-49F4-436D-9231-498428BEC509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sln_HttpListener", "sln_HttpListener\sln_HttpListener.csproj", "{EE11C6AA-49F4-436D-9231-498428BEC509}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Http_Client", "Http_Client\Http_Client.csproj", "{C10347CA-04EE-4121-81D4-F1704D93FD1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Http_Client", "Http_Client\Http_Client.csproj", "{C10347CA-04EE-4121-81D4-F1704D93FD1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sln_HttpClient", "sln_HttpClient\sln_HttpClient.csproj", "{97731011-CB54-43B4-9E6F-AF1B3BE5EB6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C10347CA-04EE-4121-81D4-F1704D93FD1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C10347CA-04EE-4121-81D4-F1704D93FD1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C10347CA-04EE-4121-81D4-F1704D93FD1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97731011-CB54-43B4-9E6F-AF1B3BE5EB6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97731011-CB54-43B4-9E6F-AF1B3BE5EB6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97731011-CB54-43B4-9E6F-AF1B3BE5EB6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97731011-CB54-43B4-9E6F-AF1B3BE5EB6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

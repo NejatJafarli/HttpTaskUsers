@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,20 +40,42 @@ namespace sln_HttpClient.ViewModels
         }
 
         public ICommand RequestTextChangedCommand { get; set; }
+        public ICommand RightClickOnResponse { get; set; }
         private HttpMethod _cbSelected;
         public HttpMethod CbSelected
         {
             get { return _cbSelected; }
             set { _cbSelected = value; OnPropertyRaised(); }
         }
+        private Visibility _visibility;
+
+        public Visibility Visible
+        {
+            get { return _visibility; }
+            set { _visibility = value; OnPropertyRaised(); }
+        }
+
         public ICommand ParamsBtnClickCommand { get; set; }
         public ICommand HeadersBtnClickCommand { get; set; }
+        public ICommand BodyBtnClickCommand { get; set; }
+
+        public ICommand ResponseHeadersBtnClickCommand { get; set; }
+        public ICommand ResponseBodyBtnClickCommand { get; set; }
+
         public ICommand SendBtnCommand { get; set; }
+
         public KeyValuePage ParamsView { get; set; } = new KeyValuePage();
         public KeyValuePage HeadersView { get; set; } = new KeyValuePage();
+        public BodyUC Body { get; set; } = new BodyUC();
+
+        public KeyValuePage ResponseHeadersView { get; set; } = new KeyValuePage();
+        public BodyUC ResponseBody { get; set; } = new BodyUC();
+
         public HttpClient Client { get; set; } = new HttpClient();
         public PostManViewModel()
         {
+
+            Visible = Visibility.Collapsed;
 
             CbItems = new ObservableCollection<HttpMethod>();
             CbItems.Add(HttpMethod.Get);
@@ -71,8 +94,27 @@ namespace sln_HttpClient.ViewModels
 
             DefaultHeadersAdd();
 
+            BodyBtnClickCommand = new ActionCommand(x =>
+              {
+                  if (x is Frame frame)
+                  {
+                      //frame.Content= //create new page item for Body
+                      frame.Content = Body;
+                  }
 
+              });
 
+            ResponseBodyBtnClickCommand = new ActionCommand(x =>
+            {
+                if (x is Frame frame)
+                    frame.Content = ResponseBody;
+            });
+
+            ResponseHeadersBtnClickCommand = new ActionCommand(x =>
+            {
+                if (x is Frame frame)
+                    frame.Content = ResponseHeadersView;
+            });
             RequestTextChangedCommand = new ActionCommand(x =>
             {
                 if (x is Frame frame)
@@ -100,36 +142,104 @@ namespace sln_HttpClient.ViewModels
                 }
             });
 
-            SendBtnCommand = new ActionCommand(x =>
+            RightClickOnResponse = new ActionCommand(x =>
+             {
+                 Visible = Visibility.Collapsed;
+             });
+
+            SendBtnCommand = new ActionCommand(async x =>
             {
                 var lbitem = (HeadersView.DataContext as KeyValuePageViewModel)?.LbItems;
 
                 foreach (var item in lbitem)
                     Client.DefaultRequestHeaders.Add(item.KeyTxt.Text, item.ValueTxt.Text);
+                if (queryString.EndsWith('&'))
+                    queryString = queryString.Remove(queryString.Length - 1);
+                var Url = UrlText + "?" + queryString;
+                if (Url.EndsWith('?'))
+                    Url = Url.Remove(Url.Length - 1);
 
+                MessageBox.Show(Url + " Url Request Sended");
+                var request = new HttpRequestMessage(CbSelected, Url);
 
+                switch (CbSelected.Method)
+                {
+                    case "GET":
+                        await GetMethodAsync(Url);
+                        break;
+                    case "DELETE":
+                        await DeleteMethodAsync(Url);
+                        break;
+                    case "POST":
+                        await PostMethodAsync(Url);
+                        break;
+                    case "PUT":
+                        await PutMethodAsync(Url);
+                        break;
+                }
 
+                Visible = Visibility.Visible;
             });
 
 
 
         }
+        private async Task PutMethodAsync(string url)
+        {
+            var t = await Client.PutAsync(url, new StringContent(Body.TextEditor.Text));
+            MessageBox.Show("Updated");
+            ResponseBody.TextEditor.Text = await t.Content.ReadAsStringAsync();
+        }
 
+        private async Task PostMethodAsync(string url)
+        {
+            var t = await Client.PostAsync(url, new StringContent(Body.TextEditor.Text));
+            var text = await t.Content.ReadAsStringAsync();
+
+            if (text == "1")
+            {
+                MessageBox.Show("Added");
+            }
+            else if (text == "0")
+                MessageBox.Show("User Already Have In DB");
+
+            ResponseBody.TextEditor.Text = text;
+        }
+        private async Task GetMethodAsync(string url)
+        {
+            var t = await Client.GetAsync(url);
+            var Json = await t.Content.ReadAsStringAsync();
+            // take Json And Write Responce Body
+            ResponseBody.TextEditor.Text = Json;
+
+        }
+        private async Task DeleteMethodAsync(string url)
+        {
+            var t = await Client.DeleteAsync(url);
+            if (t.StatusCode == System.Net.HttpStatusCode.OK)
+                MessageBox.Show("User Deleted In Database");
+            else if (t.StatusCode == System.Net.HttpStatusCode.NotFound)
+                MessageBox.Show("User Not Found");
+
+            var Json = await t.Content.ReadAsStringAsync();
+            ResponseBody.TextEditor.Text = Json;
+        }
+
+        public string queryString { get; set; } = "";
         private void PostManViewModel_ValueChangedEvent(object? sender, EventArgs e)
         {
-            var Url = URL;
-
-            Url = Url + "?";
+            queryString = "";
             foreach (var item in (ParamsView.DataContext as KeyValuePageViewModel).LbItems)
             {
                 var Temp = item.DataContext as KeyValueUCViewModel;
                 if (Temp.IsChecked)
-                    Url += $"{Temp.Key}={Temp.Value}&";
+                    queryString += $"{Temp.Key}={Temp.Value}&";
 
             }
-            if (Url.EndsWith('&'))
-                Url = Url.Remove(Url.Length - 1);
-            UrlText = Url;
+            //if (queryString.EndsWith('&'))
+            //    queryString = queryString.Remove(queryString.Length - 1);
+            //if (queryString.EndsWith('?'))
+            //    queryString = queryString.Remove(queryString.Length - 1);
         }
 
         private void DefaultHeadersAdd()

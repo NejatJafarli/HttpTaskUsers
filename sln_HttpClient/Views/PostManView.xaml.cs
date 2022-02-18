@@ -25,7 +25,6 @@ namespace sln_HttpClient.Views
         {
 
             InitializeComponent();
-            TabName = "SWeqwdqweqweqw";
             CloseCommand = new ActionCommand(x =>
               {
                   CloseRequest.Invoke(this, EventArgs.Empty);
@@ -44,5 +43,12 @@ namespace sln_HttpClient.Views
 
             GridCursor.Margin=new Thickness(10+120*index,20,0,0);
         }
+        private void Button_Click1(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse((e.Source as Button).Uid);
+
+            GriddCursor.Margin = new Thickness(10 + 120 * index, 20, 0, 0);
+        }
     }
+
 }

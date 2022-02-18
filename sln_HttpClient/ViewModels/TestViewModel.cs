@@ -19,7 +19,10 @@ namespace sln_HttpClient.ViewModels
         {
             NewTabCommand = new ActionCommand(p => NewTab());
             Tabs = new ObservableCollection<ITab>();
-            
+            var data = new PostManView { TabName = $"PostMan Tab {Tabs.Count}" };
+            data.CloseRequest += Tab_CloseRequest;
+            Tabs.Add(data);
+            SelectedItem = data;
             //Tabs.CollectionChanged += Tabs_CollectionChanged;
         }
 
@@ -59,9 +62,8 @@ namespace sln_HttpClient.ViewModels
             var data = new PostManView { TabName = $"PostMan Tab {Tabs.Count}" };
             data.CloseRequest += Tab_CloseRequest;
             Tabs.Add(data);
-            SelectedItem = Tabs[0];
 
-            MessageBox.Show(SelectedItem.TabName);
+            //MessageBox.Show(SelectedItem.TabName);
             //data = new PostManView { TabName = $"PostMan Tab {Tabs.Count}" };
             //data.CloseRequest += Tab_CloseRequest;
 

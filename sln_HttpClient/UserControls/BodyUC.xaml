@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="sln_HttpClient.UserControls.BodyUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:sln_HttpClient.UserControls" xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="700" Background="WhiteSmoke">
+    <avalon:TextEditor TextChanged="TextEditor_TextChanged" ShowLineNumbers="True"  Foreground="Black" Margin="15" FontSize="15" Name="TextEditor" ></avalon:TextEditor>
+</UserControl>

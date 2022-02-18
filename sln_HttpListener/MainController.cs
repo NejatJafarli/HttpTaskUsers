@@ -43,7 +43,6 @@ namespace sln_HttpListener
                 CallMethodForHttpMethod(Request);
             }
         }
-
         private static void CallMethodForHttpMethod(HttpListenerRequest request)
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -56,6 +55,9 @@ namespace sln_HttpListener
             .First().Name == request.HttpMethod).FirstOrDefault();
 
             InvokeThisMethod?.Invoke(null, null);
+            if (request.HttpMethod != "GET")
+                GetMethod();
+
         }
 
         [MyAtributes(Name = "GET")]
@@ -65,7 +67,7 @@ namespace sln_HttpListener
             List<PostedUser> postedUsers = new List<PostedUser>();
             foreach (var user in Users)
                 postedUsers.Add(new PostedUser(user));
-            sw.WriteLine(JsonSerializer.Serialize<List<PostedUser>>(postedUsers));
+            sw.WriteLine(JsonSerializer.Serialize<List<PostedUser>>(postedUsers,new JsonSerializerOptions { WriteIndented=true}));
             sw.Flush();
             sw.Close();
         }
@@ -88,8 +90,6 @@ namespace sln_HttpListener
                 Console.WriteLine("User Already Have In DB");
                 sw.Write("0");
             }
-            sw.Flush();
-            sw.Close();
         }
         [MyAtributes(Name = "DELETE")]
         static public void DelMethod()
@@ -103,7 +103,6 @@ namespace sln_HttpListener
                 Db.Delete(IsHave);
                 Response.StatusCode = 200;
             }
-            Response.Close();
         }
         [MyAtributes(Name = "PUT")]
         static public void PutMethod()
@@ -114,8 +113,6 @@ namespace sln_HttpListener
             IsHave.Name = ClientSendedUser[1].Name;
             IsHave.Surname = ClientSendedUser[1].Surname;
             Db.SaveChanges();
-            sw.Flush();
-            sw.Close();
         }
 
         static public User CreateNewUser(PostedUser NewUser)

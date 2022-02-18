@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sln_HttpClient.Views" xmlns:viewmodels="clr-namespace:sln_HttpClient.ViewModels" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Height="800" Width="800">
+        Height="800" Width="800" Background="Beige">
     <UserControl.DataContext>
         <viewmodels:PostManViewModel/>
     </UserControl.DataContext>
@@ -14,6 +14,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="0.05*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.1*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid>
@@ -53,12 +54,43 @@
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Button>
-            <Button Uid="2" Width="120" Click="Button_Click" Content="Body" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black"></Button>
-        </StackPanel>
+            <Button Uid="2" Width="120" Click="Button_Click" Content="Body" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding BodyBtnClickCommand}" CommandParameter="{Binding ElementName=MainFrame}"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+        </StackPanel >
         <Grid Name="GridCursor" Width="120" Height="5" Background="#D45837" Grid.Row="1" HorizontalAlignment="Left" Margin="10 20 0 0"/>
 
         <Frame NavigationUIVisibility="Hidden"  IsEnabled="False" Name="MainFrame" Grid.Row="2" Margin="25 10 10 10">
 
         </Frame>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Visibility="{Binding Visible,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="10 0">
+            <Button Uid="0" Width="120" Click="Button_Click1" Content="Body" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding ResponseBodyBtnClickCommand}" CommandParameter="{Binding ElementName=ResponseFrame}"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button Uid="1" Width="120" Click="Button_Click1" Content="Headers" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding ResponseHeadersBtnClickCommand}" CommandParameter="{Binding ElementName=ResponseFrame}"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+        </StackPanel>
+        <Grid Visibility="{Binding Visible,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Name="GriddCursor" Width="120" Height="5" Background="#D45837" Grid.Row="3" HorizontalAlignment="Left" Margin="10 20 0 0"/>
+        <Frame Visibility="{Binding Visible,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" NavigationUIVisibility="Hidden"  IsEnabled="False" Name="ResponseFrame" Grid.Row="6" Margin="25 10 10 10">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="PreviewMouseRightButtonDown">
+                    <b:InvokeCommandAction Command="{Binding RightClickOnResponse}" CommandParameter="{Binding ElementName=ResponseFrame}"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </Frame>
+
     </Grid>
 </UserControl>

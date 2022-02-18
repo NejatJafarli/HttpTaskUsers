@@ -1,9 +1,8 @@
-﻿using sln_HttpClient.Interfaces;
-using sln_HttpClient.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,22 +12,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace sln_HttpClient.Views
+namespace sln_HttpClient.UserControls
 {
     /// <summary>
-    /// Interaction logic for Test.xaml
+    /// Interaction logic for BodyUC.xaml
     /// </summary>
-    public partial class Test : Window
+    public partial class BodyUC : UserControl
     {
-        public Test()
+        public string Text { get; set; }
+
+        public BodyUC()
         {
             InitializeComponent();
         }
-        
 
-        private void Window_Closing(object sender, CancelEventArgs e)=>Application.Current.Shutdown();
-
+        private void TextEditor_TextChanged(object sender, EventArgs e)
+        {
+            Text= TextEditor.Text;
+        }
     }
 }

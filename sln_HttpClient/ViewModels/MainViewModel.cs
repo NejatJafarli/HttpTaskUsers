@@ -12,6 +12,7 @@ using System.Threading;
 using System.Text.Json;
 using System.Windows.Controls;
 using System.Windows;
+using sln_HttpClient.Interfaces;
 
 namespace sln_HttpClient.ViewModels
 {

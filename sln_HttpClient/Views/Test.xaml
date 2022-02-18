@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sln_HttpClient.Views"
-        xmlns:viewmodels="clr-namespace:sln_HttpClient.ViewModels" xmlns:interfaces="clr-namespace:sln_HttpClient.Interfaces"
+        xmlns:viewmodels="clr-namespace:sln_HttpClient.ViewModels" xmlns:interfaces="clr-namespace:sln_HttpClient.Interfaces" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Test" Height="450" Width="800">
+        Title="Test" Height="450" Width="800" Closing="Window_Closing">
     <Window.DataContext>
         <viewmodels:TestViewModel/>
     </Window.DataContext>
@@ -14,17 +14,21 @@
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Button Command="{Binding NewTabCommand}">New Tab</Button>
         </StackPanel>
-        <TabControl ItemsSource="{Binding Tabs}">
+        <TabControl ItemsSource="{Binding Tabs,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedItem,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
             <TabControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:MainView}">
+                <DataTemplate>
                     <TextBlock>
-                        <Run Text="{Binding Name}"/>
-                        <Hyperlink Command="{Binding CloseCommand}">X</Hyperlink>
+                        <Run Text="{Binding Tabs.TabName}"/>
+                        <Hyperlink Click="Hyperlink_Click" >X</Hyperlink>
                     </TextBlock>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <!--<TabControl.Resources>
-                <DataTemplate DataType="{x:Type global:PostManTab}">
+
+                <DataTemplate DataType="{x:Type local:PostManView}" x:Name="DataTemp">
+                    <local:PostManView CloseRequest="PostManView_CloseRequest"/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:MainView}">
                     <local:MainView/>
                 </DataTemplate>
             </TabControl.Resources>-->

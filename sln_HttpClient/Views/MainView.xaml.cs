@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xaml.Behaviors.Core;
+using sln_HttpClient.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,14 +19,24 @@ namespace sln_HttpClient.Views
     /// <summary>
     /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainView : Window
+    public partial class MainView : UserControl,ITab
     {
         public MainView()
         {
             InitializeComponent();
             btnDel.IsEnabled = false;
             btnPut.IsEnabled = false;
+            CloseCommand = new ActionCommand(x =>
+              {
+                  CloseRequest?.Invoke(this, EventArgs.Empty);
+              });
         }
+
+        public string TabName { get ; set; }
+
+        public ICommand CloseCommand { get; }
+
+        public event EventHandler CloseRequest;
 
         private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xaml.Behaviors.Core;
+using sln_HttpClient.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,13 +19,23 @@ namespace sln_HttpClient.Views
     /// <summary>
     /// Interaction logic for PostManView.xaml
     /// </summary>
-    public partial class PostManView : Window
+    public partial class PostManView : UserControl,ITab
     {
         public PostManView()
         {
-            InitializeComponent();
-        }
 
+            InitializeComponent();
+            TabName = "SWeqwdqweqweqw";
+            CloseCommand = new ActionCommand(x =>
+              {
+                  CloseRequest.Invoke(this, EventArgs.Empty);
+              });
+        } 
+        public string TabName { get ; set; }
+
+        public ICommand CloseCommand { get; }
+
+        public event EventHandler CloseRequest;
 
       
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using sln_HttpClient.Interfaces;
+using sln_HttpClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,24 @@ namespace sln_HttpClient.Views
         public Test()
         {
             InitializeComponent();
+        }
+        
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+            =>
+            Application.Current.Shutdown();
+
+        private void PostManView_CloseRequest(object sender, EventArgs e)
+        {
+            MessageBox.Show("HI");
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+
+            var temp = this.DataContext as TestViewModel;
+            temp.Tabs.Remove(sender as ITab);
+            MessageBox.Show("DWEQ");
         }
     }
 }

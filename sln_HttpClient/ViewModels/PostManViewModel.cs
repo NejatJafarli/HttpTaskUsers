@@ -17,7 +17,7 @@ using System.Windows.Input;
 
 namespace sln_HttpClient.ViewModels
 {
-    public class PostManViewModel : Tab, INotifyPropertyChanged
+    public class PostManViewModel : INotifyPropertyChanged
     {
         public string URL { get; set; } = "http://localhost:45678/";
         public event PropertyChangedEventHandler PropertyChanged;

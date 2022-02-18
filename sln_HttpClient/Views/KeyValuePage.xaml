@@ -1,0 +1,44 @@
+﻿<Page x:Class="sln_HttpClient.Views.KeyValuePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:sln_HttpClient.Views" xmlns:viewmodels="clr-namespace:sln_HttpClient.ViewModels" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="400"
+      Title="KeyValuePage" Background="White">
+    <Page.DataContext>
+        <viewmodels:KeyValuePageViewModel/>
+    </Page.DataContext>
+
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.15*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid ShowGridLines="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20 0 0 0" FontSize="25" Foreground="Gray">Key</TextBlock>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20 0 0 0" Grid.Column="1" FontSize="25" Foreground="Gray">Value</TextBlock>
+        </Grid>
+        <ListBox Grid.Row="1" SelectedItem="{Binding SelectedItem,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  ItemsSource="{Binding LbItems,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SelectionChanged">
+                    <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </ListBox>
+        <Button Content="+" VerticalAlignment="Center" Grid.Row="2" FontSize="20" >
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="Click">
+                    <b:InvokeCommandAction Command="{Binding PlusBtnClickCommand}"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </Button>
+    </Grid>
+</Page>
